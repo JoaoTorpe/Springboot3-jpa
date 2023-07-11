@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.educaweb.curso.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ public class Order implements Serializable {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private long id;
 	private Instant moment;
-	
+	private Integer orderStatus;
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name= "client_id")
@@ -33,10 +34,11 @@ public class Order implements Serializable {
 		
 	}
 
-	public Order(Instant moment, User client) {
+	public Order(Instant moment, User client,OrderStatus OrderStatus) {
 		
 		this.moment = moment;
 		this.client = client;
+		setOrderStatus(OrderStatus);
 	}
 
 	public Instant getMoment() {
@@ -59,6 +61,21 @@ public class Order implements Serializable {
 		return id;
 	}
 
+	
+
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+		this.orderStatus = orderStatus.getCode();
+		}
+	}
+	
+	
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -75,7 +92,7 @@ public class Order implements Serializable {
 		Order other = (Order) obj;
 		return id == other.id;
 	}
-	
+
 	
 	
 	
