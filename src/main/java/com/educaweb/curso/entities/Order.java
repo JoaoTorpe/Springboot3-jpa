@@ -2,7 +2,9 @@ package com.educaweb.curso.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.educaweb.curso.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_order")
@@ -29,6 +32,10 @@ public class Order implements Serializable {
 	@ManyToOne
 	@JoinColumn(name= "client_id")
 	private User client;
+	
+
+	@OneToMany(mappedBy = "id.Order")
+	private Set<OrderItem> Orderitems= new HashSet<>();
 	
 	public Order() {
 		
@@ -61,7 +68,9 @@ public class Order implements Serializable {
 		return id;
 	}
 
-	
+	public Set<OrderItem> getOrderitems() {
+		return Orderitems;
+	}
 
 	public OrderStatus getOrderStatus() {
 		return OrderStatus.valueOf(orderStatus);
@@ -92,6 +101,8 @@ public class Order implements Serializable {
 		Order other = (Order) obj;
 		return id == other.id;
 	}
+
+	
 
 	
 	
