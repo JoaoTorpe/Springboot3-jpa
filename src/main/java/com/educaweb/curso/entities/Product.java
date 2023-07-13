@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 @Entity
@@ -28,9 +31,13 @@ public class Product {
 	
 	@ManyToMany
 	@JoinTable(name="join_product_category", joinColumns = @JoinColumn(name = "product_id"), 
-	inverseJoinColumns = @JoinColumn(name = "category_id")
-			)
+	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> Categories = new HashSet<>() ;
+	
+	@OneToMany(mappedBy = "id.Product")
+	private Set<OrderItem> items = new HashSet<>();
+	
+	
 	
 	public Product() {
 		
@@ -70,6 +77,16 @@ public void setImgUrl(String imgUrl) {
 
 public Set<Category> getCategories() {
 	return Categories;
+}
+@JsonIgnore
+public Set<Order> getOrders(){
+	Set<Order> set = new HashSet<>();
+	
+	for(OrderItem x : items) {
+		set.add(x.getOrder());
+		
+	}
+	return set;
 }
 
 @Override
