@@ -35,5 +35,11 @@ public class userService {
 		
 	}
 	
+	public void deleteUser(User user) {
+		
+		Repository.delete(user);
+		
+	}
+	
 	
 }
