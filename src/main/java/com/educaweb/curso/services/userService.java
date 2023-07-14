@@ -37,7 +37,16 @@ public class userService {
 	
 	public void deleteUser(User user) {
 		
-		Repository.delete(user);
+		Repository.delete(user);	
+	}
+	
+	public User updateUser(User user,User newUserData) {
+		user.setName(newUserData.getName());
+		user.setEmail(newUserData.getEmail());
+		user.setPhone(newUserData.getPhone());
+		
+		Repository.save(user);
+		return user;
 		
 	}
 	
