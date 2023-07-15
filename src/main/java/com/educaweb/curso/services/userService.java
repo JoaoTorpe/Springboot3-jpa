@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.educaweb.curso.entities.User;
 import com.educaweb.curso.repositories.userRepository;
+import com.educaweb.curso.services.exeptions.ResourceNotFoundExption;
 @Service
 public class userService {
 
@@ -26,7 +27,7 @@ public class userService {
 		
 		Optional<User> user =  Repository.findById(id);
 		
-		return user.get();
+		return user.orElseThrow( () -> new ResourceNotFoundExption(id));
 	}
 	
 	public User indertUser(User user) {
